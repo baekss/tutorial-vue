@@ -8,24 +8,57 @@
 </head>
 <body>
     <div id="app">
-        <app-header></app-header>
-        <app-footer></app-footer>
+        <p>{{ num }}</p>
+        <app-header v-bind:propsdata="message"></app-header>
+        <app-content v-bind:propsdata="text" v-on:add="changeNumber"></app-content>
+        <app-footer v-on:pass="logText"></app-footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
-        Vue.component('app-header', {
-            template: '<h1>header</h1>'
-        });
+        var appHeader = {
+            template: '<h1>{{ propsdata }}</h1>',
+            props: ['propsdata']
+        };
+        var appContent = {
+            template: '<button v-on:click="addNumber">{{ propsdata }}</button>',
+            props: ['propsdata'],
+            methods: {
+                addNumber: function() {
+                    this.$emit('add');
+                }
+            }
+        };
+        var appFooter = {
+            template: '<button v-on:click="passEvent">click me</button>',
+            methods: {
+                passEvent: function() {
+                    this.$emit('pass');
+                }
+            }
+        };
         new Vue({
             el: '#app',
             components: {
-                'app-footer': {
-                    template: '<footer>footer</footer>'
+                'app-header': appHeader,
+                'app-content': appContent,
+                'app-footer': appFooter
+            },
+            data: {
+                message: 'hi',
+                text: 'add',
+                num: 10
+            },
+            methods: {
+                logText: function() {
+                    console.log('hi');
+                },
+                changeNumber: function() {
+                    // this 는 Vue객체를 가르킨다.
+                    this.num++;
                 }
             }
         });
-
     </script>
 </body>
 </html>
