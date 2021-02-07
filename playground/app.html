@@ -11,7 +11,7 @@
         <p>{{ num }}</p>
         <app-header v-bind:propsdata="message"></app-header>
         <app-content v-bind:propsdata="text" v-on:add="changeNumber"></app-content>
-        <app-footer v-on:pass="logText"></app-footer>
+        <app-footer v-on:pass="changeText"></app-footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -30,10 +30,11 @@
             }
         };
         var appFooter = {
-            template: '<button v-on:click="passEvent">click me</button>',
+            template: '<div>footer<button v-on:click="passText">click me</button></div>',
             methods: {
-                passEvent: function() {
-                    this.$emit('pass');
+                passText: function(event) {
+                    console.log(event);
+                    this.$emit('pass', 'hello');
                 }
             }
         };
@@ -50,8 +51,9 @@
                 num: 10
             },
             methods: {
-                logText: function() {
-                    console.log('hi');
+                changeText: function(value) {
+                    console.log(value); // value 는 하위 컴포넌트가 전송한 값 $emit('pass', 'hello')
+                    this.message = value;
                 },
                 changeNumber: function() {
                     // this 는 Vue객체를 가르킨다.
