@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p v-bind:id="uuid" v-bind:class="name">{{ num }}</p>
+        <!-- Vue의 data에서 해당 속성 값 할당 -->
+        <!-- <p id="child_1" class="text-blue">10</p> -->
+        <p>{{ doubleNum }}</p>
+        <!-- v-if와 v-else는 인접 이웃 요소여야 함 -->
+        <div v-if="loading">로딩...</div>
+        <div v-else>로딩 완료</div>
+        <div v-show="loading">로딩...</div>
+        <!-- Vue의 data에서 해당 속성 값 통해 show, hide 수행 -->
+        <!-- <div style="display: none;">로딩...</div> -->
+        <input v-model="message" v-on:keyup.enter="showDate" type="text">
+        <!-- Vue의 data에서 해당 속성 값과 연결 됨 -->
+        <p>{{ message }}</p>
+        <!-- Vue의 methods에서 showDate함수와 연결 됨(조건: enter키) -->
+        <p>{{ updatedDate }}</p>
+        <button v-on:click="changeNum">changeNum</button>
+        <button v-on:click="changeLoading">changeLoading</button>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: '#app',
+            data: {
+                // this(vm 참조 값)의 하위 레벨 속성으로 생성 됨
+                num: 10,
+                uuid: 'child_1',
+                name: 'text-blue',
+                loading: true,
+                message: '',
+                updatedDate: ''
+            },
+            computed: {
+                doubleNum: function() {
+                    // data의 num이 변경되면 doubleNum도 함께 변경 됨
+                    return this.num * 2;
+                }
+            },
+            methods: {
+                changeNum: function() {
+                    this.num++;
+                },
+                changeLoading: function() {
+                    // data의 loading 속성 변경을 통해 v-if, v-else를 제어 함
+                    this.loading = !this.loading;
+                },
+                showDate: function() {
+                    this.updatedDate = '업데이트 ' + new Date().toLocaleString();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
