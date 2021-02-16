@@ -6,24 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .warning {
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
-        <p v-bind:id="uuid" v-bind:class="name">{{ num }}</p>
+        <p v-bind:id="uuid" v-bind:class="[name, errorTextColor]">{{ num }}</p>
         <!-- Vue의 data에서 해당 속성 값 할당 -->
         <!-- <p id="child_1" class="text-blue">10</p> -->
+
         <p>{{ doubleNum }}</p>
+
         <!-- v-if와 v-else는 인접 이웃 요소여야 함 -->
         <div v-if="loading">로딩...</div>
         <div v-else>로딩 완료</div>
+        
         <div v-show="loading">로딩...</div>
         <!-- Vue의 data에서 해당 속성 값 통해 show, hide 수행 -->
         <!-- <div style="display: none;">로딩...</div> -->
+
         <input v-model="message" v-on:keyup.enter="showDate" type="text">
         <!-- Vue의 data에서 해당 속성 값과 연결 됨 -->
+
         <p>{{ message }}</p>
+
         <!-- Vue의 methods에서 showDate함수와 연결 됨(조건: enter키) -->
         <p>{{ updatedDate }}</p>
+
         <button v-on:click="changeNum">changeNum</button>
         <button v-on:click="changeLoading">changeLoading</button>
     </div>
@@ -37,12 +49,28 @@
                 name: 'text-blue',
                 loading: true,
                 message: '',
-                updatedDate: ''
+                updatedDate: '',
+                isError: true
             },
             computed: {
                 doubleNum: function() {
                     // data의 num이 변경되면 doubleNum도 함께 변경 됨
-                    return this.num * 2;
+                    let result = this.num * 2;
+                    // 마찬가지로 this.loading을 본 함수에서 사용하면 data의 loading 값이 변경될 때 영향 받음
+                    return result;
+                },
+                errorTextColor: function() {
+                    // computed의 속성값도 DOM 요소의 attribute값으로 활용할 수 있다.
+                    this.isError = new Date().getTime() % 2 === 0;
+                    return this.isError ? 'warning' : null;
+                }
+            },
+            watch: {
+                num: function(newValue, oldValue) {
+                    // newValue : data의 num을 변경한 이벤트(즉, this.changeNum())에 의해 변경된 값
+                    // oldValue : data의 num이 변경되기 이전 값
+                    // data의 num이 변경되면 this.logText() 실행 됨
+                    this.logText(newValue, oldValue);
                 }
             },
             methods: {
@@ -55,6 +83,11 @@
                 },
                 showDate: function() {
                     this.updatedDate = '업데이트 ' + new Date().toLocaleString();
+                },
+                logText: function(newValue, oldValue) {
+                    console.log('changed num ' + this.num);
+                    console.log('changed newValue ' + newValue);
+                    console.log('changed oldValue ' + oldValue);
                 }
             }
         });
