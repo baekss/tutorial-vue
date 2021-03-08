@@ -1,6 +1,7 @@
 <template>
   <div>
-    <ul>
+    <!-- name명(list)은 css의 class속성 prefix(.list-), ul tag로 치환 -->
+    <transition-group name="list" tag="ul">
       <li v-for="(todoItem, index) in propsdata" v-bind:key="todoItem.item" class="shadow">
         <!-- todoItem.completed(boolean) 상태에 의해 checkBtnCompleted class속성 유/무결정 -->
         <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" 
@@ -10,7 +11,7 @@
           <i class="fas fa-trash-alt"></i>
         </span>
       </li>
-    </ul>
+    </transition-group>
   </div>
 </template>
 
@@ -60,5 +61,13 @@ li {
 .removeBtn {
   margin-left: auto;
   color: #DE4343;
+}
+
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
 }
 </style>
