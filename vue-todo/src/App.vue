@@ -44,6 +44,7 @@ export default {
     }
   },
   // Vue 인스턴스 라이프사이클 Hook
+  /*
   created() {
     if (localStorage.length > 0) {
       for (let i = 0; i < localStorage.length; i++) {
@@ -54,6 +55,7 @@ export default {
       }
     }
   },
+  */
   components: {
     // 컴포넌트 태그명: 컴포넌트 내용
     // 컴포넌트 태그명, 속성명 동일시 다음과 같이 향상된 객체 리터럴로 표현
