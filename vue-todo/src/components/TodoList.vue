@@ -2,7 +2,7 @@
   <div>
     <!-- name명(list)은 css의 class속성 prefix(.list-), ul tag로 치환 -->
     <transition-group name="list" tag="ul">
-      <li v-for="(todoItem, index) in this.$store.state.todoItems" v-bind:key="todoItem.item" class="shadow">
+      <li v-for="(todoItem, index) in this.todoItems" v-bind:key="todoItem.item" class="shadow">
         <!-- todoItem.completed(boolean) 상태에 의해 checkBtnCompleted class속성 유/무결정 -->
         <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" 
           v-on:click="toggleComplete(todoItem, index)"></i>
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   methods: {
     removeTodo: function(todoItem, index) {
@@ -24,6 +26,16 @@ export default {
     toggleComplete: function(todoItem, index) {
       this.$store.commit('toggleOneItem', {todoItem, index});
     }
+  },
+  computed: {
+    // todoItems() {
+    //   return this.$store.getters.storedTodoItems;
+    // }
+    // ...mapGetters(['storedTodoItems'])
+    // getters의 함수명과 템플릿에 표현할 속성명을 다르게 사용할 때는 객체 리터럴 사용
+    ...mapGetters({
+      todoItems: 'storedTodoItems'
+    })
   }
 }
 </script>

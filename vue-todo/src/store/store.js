@@ -25,6 +25,11 @@ export const store = new Vuex.Store({
     todoItems: storage.fetch(),
     users: []
   },
+  getters: {
+    storedTodoItems(state) {
+      return state.todoItems;
+    }
+  },
   mutations: {
     // mutations 메소드의 첫번째 매개변수는 state 객체
     // 두번째 매개변수는 컴포넌트에서 commit으로 넘긴 인자값(2개 이상의 인자값을 넘겨야 할 경우엔 객체로 만들어 넘김)
