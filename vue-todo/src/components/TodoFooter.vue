@@ -11,14 +11,22 @@
 </template>
 
 <script>
+import { mapMutations, mapActions } from 'vuex'
+
 export default {
   methods: {
-    clearTodo: function() {
-      this.$store.commit('clearAllItems');
-    },
-    showUsers: function() {
-      this.$store.dispatch('fetchAllUsers');
-    }
+    ...mapMutations({
+      clearTodo: 'clearAllItems'
+    }),
+    ...mapActions({
+      showUsers: 'fetchAllUsers'
+    })
+    // clearTodo: function() {
+    //   this.$store.commit('clearAllItems');
+    // },
+    // showUsers: function() {
+    //   this.$store.dispatch('fetchAllUsers');
+    // }
   }
 }
 </script>
