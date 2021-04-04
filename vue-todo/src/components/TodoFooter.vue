@@ -3,7 +3,7 @@
     <span class="clearAllBtn" v-on:click="clearTodo">Clear All</span>
     <button class="showAllBtn" v-on:click="showUsers">Show the app's users</button>
     <ul>
-      <li v-for="(user) in this.$store.state.users" v-bind:key="user.id">
+      <li v-for="(user) in users" v-bind:key="user.id">
         <span>{{ user.username }}</span>
       </li>
     </ul>
@@ -11,9 +11,12 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
+  computed: {
+    ...mapGetters(['users'])
+  },
   methods: {
     ...mapMutations({
       clearTodo: 'clearAllItems'
